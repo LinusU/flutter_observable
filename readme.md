@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
         ///
         /// It listens to the specified `Observable` and re-builds whenever there is a new value set.
         ///
-        body: ObservableBuilder(
+        body: ObservableBuilder<int>(
           observable: clicksObservable,
-          builder: (context, snapshot) {
+          builder: (context, clicks) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
                     'You have pushed the button this many times:',
                   ),
                   Text(
-                    '${snapshot.data}',
+                    '${clicks}',
                     style: Theme.of(context).textTheme.display1,
                   ),
                 ],
