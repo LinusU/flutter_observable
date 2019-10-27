@@ -1,6 +1,6 @@
 name: flutter_observable
 description: A simple observable with corresponding controller and builder.
-version: 0.1.0
+version: 0.1.1
 author: Linus Unnebäck <linus@folkdatorn.se>
 homepage: https://github.com/LinusU/flutter_observable
 
