@@ -16,6 +16,8 @@ class Observable<T> {
   Observable._internal(this._controller);
 
   /// Creates a new Observable from the provided stream and initial value
+  ///
+  /// Note that the stream should not emit errors, as these will not be listened for.
   Observable.stream(Stream<T> stream, T initialValue): _controller = ObservableController(initialValue) {
     stream.listen((value) { _controller.value = value; }, onDone: () { _controller.close(); });
   }
@@ -31,6 +33,8 @@ class ObservableController<T> {
   T _value;
 
   /// Get a stream with updates to the value.
+  ///
+  /// Note that this stream will never fire any errors.
   Stream<T> get _stream => _controller.stream;
 
   /// Get the current value.
@@ -60,7 +64,7 @@ class ObservableController<T> {
 /// Widget that builds itself based on the latest snapshot of interaction with an Observable.
 class ObservableBuilder<T> extends StatelessWidget {
   /// The build strategy currently used by this builder.
-  final AsyncWidgetBuilder<T> builder;
+  final Widget Function(BuildContext context, T value) builder;
 
   /// The observable to which this builder is currently connected.
   final Observable<T> observable;
@@ -72,8 +76,8 @@ class ObservableBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      builder: this.builder,
+    return StreamBuilder<T>(
+      builder: (context, snapshot) => this.builder(context, snapshot.data),
       initialData: this.observable.value,
       stream: this.observable.stream,
     );
