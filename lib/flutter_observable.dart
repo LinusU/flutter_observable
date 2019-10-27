@@ -14,6 +14,11 @@ class Observable<T> {
   Stream<T> get stream => _controller._stream;
 
   Observable._internal(this._controller);
+
+  /// Creates a new Observable from the provided stream and initial value
+  Observable.stream(Stream<T> stream, T initialValue): _controller = ObservableController(initialValue) {
+    stream.listen((value) { _controller.value = value; }, onDone: () { _controller.close(); });
+  }
 }
 
 /// A controller with the observable it controls.
